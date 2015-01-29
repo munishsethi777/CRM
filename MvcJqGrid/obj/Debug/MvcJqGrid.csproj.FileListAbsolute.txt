@@ -1,0 +1,5 @@
+G:\Webdocs\CRM\MvcJqGrid\bin\Debug\MvcJqGrid.dll
+G:\Webdocs\CRM\MvcJqGrid\bin\Debug\MvcJqGrid.pdb
+G:\Webdocs\CRM\MvcJqGrid\obj\Debug\MvcJqGrid.csprojResolveAssemblyReference.cache
+G:\Webdocs\CRM\MvcJqGrid\obj\Debug\MvcJqGrid.dll
+G:\Webdocs\CRM\MvcJqGrid\obj\Debug\MvcJqGrid.pdb
