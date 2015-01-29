@@ -1,0 +1,7 @@
+G:\Webdocs\CRM\MVCModels\bin\Debug\MVCModels.dll.config
+G:\Webdocs\CRM\MVCModels\bin\Debug\MVCModels.dll
+G:\Webdocs\CRM\MVCModels\bin\Debug\MVCModels.pdb
+G:\Webdocs\CRM\MVCModels\bin\Debug\EntityFramework.dll
+G:\Webdocs\CRM\MVCModels\bin\Debug\EntityFramework.xml
+G:\Webdocs\CRM\MVCModels\obj\Debug\MVCModels.dll
+G:\Webdocs\CRM\MVCModels\obj\Debug\MVCModels.pdb
