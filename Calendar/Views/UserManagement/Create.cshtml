@@ -1,0 +1,120 @@
+﻿@model MVCModels.User
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>CreateUser</h2>
+<p>
+    @Html.ActionLink("Show Users", "index")
+    @Html.ActionLink("Create New User", "Create")
+</p>
+
+@using (Html.BeginForm("ConfirmCreate", "UserManagement"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.Hidden("id")
+    <fieldset>
+        <legend>Create User</legend>
+        <h3>General</h3>
+        <div style="margin-left:30px;">
+            <div class="editor-label">
+                @Html.LabelFor(model=>model.name)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.name)
+                @Html.ValidationMessageFor(model => model.name)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.email)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.email)
+                @Html.ValidationMessageFor(model => model.email)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.password)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.password)
+                @Html.ValidationMessageFor(model => model.password)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.mobile)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.mobile)
+                @Html.ValidationMessageFor(model => model.mobile)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.phone)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.phone)
+                @Html.ValidationMessageFor(model => model.phone)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.address1)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.address1)
+                @Html.ValidationMessageFor(model => model.address1)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.address2)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.address2)
+                @Html.ValidationMessageFor(model => model.address2)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.city)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.city)
+                @Html.ValidationMessageFor(model => model.city)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.zip)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.zip)
+                @Html.ValidationMessageFor(model => model.zip)
+            </div>
+
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.state)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.state)
+                @Html.ValidationMessageFor(model => model.state)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.country)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.country)
+                @Html.ValidationMessageFor(model => model.country)
+            </div>
+
+
+
+
+        </div>
+        
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}

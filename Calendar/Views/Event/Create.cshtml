@@ -1,0 +1,105 @@
+﻿@model Calendar.Models.CalendarEvent
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.bDate').datetimepicker();
+    });
+</script>
+@using (Html.BeginForm("ConfirmCreate", "Event"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.Hidden("id")
+    <fieldset>
+        <legend>CalendarEvent</legend>
+    <h3>General</h3>
+        <div style="margin-left:30px;">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.title)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.title)
+                @Html.ValidationMessageFor(model => model.title)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.description)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.description)
+                @Html.ValidationMessageFor(model => model.description)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.startdate)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.startdate, "{0:MM/dd/yyyy}", new { @class = "bDate", @placeholder = "Select Date" })
+                @Html.ValidationMessageFor(model => model.startdate)
+            </div>
+        </div>
+         <h3>Duration</h3>
+         <div style="margin-left:30px;">
+                <div class="editor-field">
+                    <input style="width:auto" type="radio" id="durationoption" value="@Calendar.Models.DurationOptions.WithoutDuration" name="durationoption" checked="checked"> Without Duration
+                </div>
+                <div class="editor-field">
+                    <input style="width:auto" type="radio" id="durationoption" value="@Calendar.Models.DurationOptions.Untill" name="durationoption"> Untill
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.durationuntill, "{0:MM/dd/yyyy}", new { @class = "bDate", @placeholder = "Select Date" })
+                    @Html.ValidationMessageFor(model => model.durationuntill)
+                </div>
+                <div class="editor-field">
+                    <input style="width:auto" type="radio" id="durationoption" value="@Calendar.Models.DurationOptions.DurationInMunites" name="durationoption"> Duration In Munites
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.durationinminutes)
+                    @Html.ValidationMessageFor(model => model.durationinminutes)
+                </div>
+         </div>
+        <h3>Repeated Events</h3>
+        <div style="margin-left:30px;">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.isrepeated)
+                @Html.EditorFor(model => model.isrepeated)
+                @Html.ValidationMessageFor(model => model.isrepeated)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.repeatedweekly)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.repeatedweekly)
+                @Html.ValidationMessageFor(model => model.repeatedweekly)
+            </div>
+        </div>
+            <p>
+                <input type="submit" value="Create" />
+            </p>
+</fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
+    <script type="text/javascript" language="javascript">
+
+        @{
+            var id = 0;
+            if (Model != null)
+            {
+                id = Model.id;
+            }
+        }
+        document.getElementById("id").value = "@id";
+    </script>
+

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Calendar.Models.CalendarEvent>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Show Calendar", "ShowEvents")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.startdate)
+        </th>
+       
+        
+        <th>
+            @Html.DisplayNameFor(model => model.isrepeated)
+        </th>
+     
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.startdate)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.isrepeated)
+        </td>
+        
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink(
+            "Delete",
+            "ConfirmDelete",
+            new { id = item.id },
+            new { onclick = "return confirm('Are you sure you wish to delete this article?');" })
+            
+        </td>
+    </tr>
+}
+
+</table>
