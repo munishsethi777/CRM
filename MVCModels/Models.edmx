@@ -23,6 +23,18 @@
           <Property Name="eventtype" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="deparmentid" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="varchar" MaxLength="200" />
+          <Property Name="isactive" Type="tinyint" />
+          <Property Name="createdon" Type="datetime" />
+          <Property Name="createdby" Type="bigint" />
+          <Property Name="lastmodifiedon" Type="datetime" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="id" />
@@ -39,10 +51,15 @@
           <Property Name="country" Type="varchar" MaxLength="50" />
           <Property Name="zip" Type="varchar" MaxLength="50" />
           <Property Name="phone" Type="varchar" MaxLength="50" />
-          <Property Name="usertype" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="usertype" Type="varchar" MaxLength="50" />
+          <Property Name="isactive" Type="tinyint" />
+          <Property Name="createdon" Type="datetime" />
+          <Property Name="createdby" Type="bigint" />
+          <Property Name="lastmodifiedon" Type="datetime" />
         </EntityType>
         <EntityContainer Name="AccountsModelStoreContainer">
           <EntitySet Name="CalendarEvents" EntityType="Self.CalendarEvents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -83,12 +100,29 @@
           <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="zip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="usertype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usertype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isactive" Type="Byte" />
+          <Property Name="createdon" Type="DateTime" Precision="3" />
+          <Property Name="createdby" Type="Int64" />
+          <Property Name="lastmodifiedon" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityContainer Name="AccountsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CalendarEvents" EntityType="Self.CalendarEvent" />
           <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Roles" EntityType="AccountsModel.Role" />
         </EntityContainer>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="isactive" Type="Byte" />
+          <Property Name="createdon" Type="DateTime" Precision="3" />
+          <Property Name="createdby" Type="Int64" />
+          <Property Name="lastmodifiedon" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -117,6 +151,10 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="AccountsModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="lastmodifiedon" ColumnName="lastmodifiedon" />
+                <ScalarProperty Name="createdby" ColumnName="createdby" />
+                <ScalarProperty Name="createdon" ColumnName="createdon" />
+                <ScalarProperty Name="isactive" ColumnName="isactive" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="email" ColumnName="email" />
@@ -130,6 +168,19 @@
                 <ScalarProperty Name="zip" ColumnName="zip" />
                 <ScalarProperty Name="phone" ColumnName="phone" />
                 <ScalarProperty Name="usertype" ColumnName="usertype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="AccountsModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="lastmodifiedon" ColumnName="lastmodifiedon" />
+                <ScalarProperty Name="createdby" ColumnName="createdby" />
+                <ScalarProperty Name="createdon" ColumnName="createdon" />
+                <ScalarProperty Name="isactive" ColumnName="isactive" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
