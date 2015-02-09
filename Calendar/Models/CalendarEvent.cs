@@ -7,13 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Calendar.Models
+namespace CRM.Models
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    [MetadataType(typeof(Calendar.MetaData.CalendarEventMetaData))]
+   // [MetadataType(typeof(CRM.MetaData.CalendarEventMetaData))]
     public partial class CalendarEvent
     {
         public int id { get; set; }

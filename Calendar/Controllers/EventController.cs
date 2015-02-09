@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Calendar.Models;
 using System.Data.Entity;
-namespace Calendar.Controllers
+using MVCModels;
+
+namespace CRM.Controllers
 {
     public class EventController : Controller
     {
-        private static AccountsEntities1 db = new AccountsEntities1();
+        private static AccountsEntities db = new AccountsEntities();
         //
         // GET: /Event/
 
         public ActionResult Index()
         {
-            var db = new AccountsEntities1();
+            var db = new AccountsEntities();
             var events = from calEvents in db.CalendarEvents
                          select calEvents;
             return View(events.ToList());
@@ -31,7 +32,7 @@ namespace Calendar.Controllers
             return View();
         }
        
-        public ActionResult ConfirmCreate(CalendarEvent calEvent)
+        public ActionResult ConfirmCreate(MVCModels.CalendarEvent calEvent)
         {
             try
             {

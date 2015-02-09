@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace Calendar
+namespace CRM
 {
     public class FilterConfig
     {

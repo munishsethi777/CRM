@@ -1,7 +1,44 @@
-﻿@{
-    ViewBag.Title = "index";
+﻿@using MvcJqGrid;
+@using MvcJqGrid.Enums;
+
+@{
+    ViewBag.Title = "Users";
 }
-<p>
-    @Html.ActionLink("Show Users", "index")
-    @Html.ActionLink("Create New User", "Create")  
-</p>
+
+<table id="tblGrid"></table>
+<div id="pager"></div>
+@(Html.Grid("#tblGrid")
+    .SetCaption("Users Dashboard")
+    .AddColumn(new Column("Action").SetCustomFormatter("buttonize").SetWidth(75).SetSearch(false).SetSortable(false))
+    .AddColumn(new Column("isactive").SetHidden(true).AddClass("Hide"))
+    .AddColumn(new Column("name").SetLabel("Full Name"))
+    .SetUrl(Url.Action("GetAllUsers", "UserManagement"))
+    .SetAutoWidth(true)
+    .SetRowNum(10)
+    .SetRowList(new[] { 10, 15, 20, 50 })
+    .SetViewRecords(true)
+    .SetPager("pager")
+    .SetHeight(350)
+    .SetWidth(450)
+    .SetSearchToolbar(true)
+    .SetSearchOnEnter(false)
+    .SetSearchClearButton(true)
+    .SetSearchToggleButton(true)
+    .SetMultiSelect(false)
+    .SetMultiBoxOnly(false)
+            //.SetMultiSelectWidth(40)
+    .SetToolbar(true)
+    .SetToolbarPosition(ToolbarPosition.Top)
+    .SetHoverRows(true)
+    .SetAltRows(true)
+    .SetShrinkToFit(false)
+    .SetSortOrder(SortOrder.Desc)
+    )
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#tblGrid").jqGrid();
+    });
+
+</script>

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Web.WebPages.OAuth;
-using Calendar.Models;
+using CRM.Models;
 
-namespace Calendar
+namespace CRM
 {
     public static class AuthConfig
     {

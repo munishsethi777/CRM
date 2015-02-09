@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Calendar.Controllers
+namespace CRM.Controllers
 {
     public class HomeController : Controller
     {
@@ -15,7 +15,7 @@ namespace Calendar.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Dashboard()
         {
             ViewBag.Message = "Your app description page.";
 

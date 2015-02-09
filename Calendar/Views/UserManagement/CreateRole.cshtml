@@ -1,0 +1,50 @@
+﻿@model MVCModels.Role
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Roles</h2>
+<p>
+    @Html.ActionLink("Show Users", "index")
+    @Html.ActionLink("Create New User", "Create")
+    @Html.ActionLink("Create New Role", "CreateRole")
+</p>
+
+@using (Html.BeginForm("ConfirmCreateRole", "UserManagement"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.Hidden("id")
+    <fieldset>
+        <legend>Create User</legend>
+        <h3>General</h3>
+        <div style="margin-left:30px;">
+            <div class="editor-label">
+                @Html.LabelFor(model=>model.name)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.name)
+                @Html.ValidationMessageFor(model => model.name)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.description)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.description)
+                @Html.ValidationMessageFor(model => model.description)
+            </div>
+
+            
+
+
+
+
+        </div>
+        
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}

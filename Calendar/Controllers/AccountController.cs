@@ -8,10 +8,10 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
-using Calendar.Filters;
-using Calendar.Models;
+using CRM.Filters;
+using CRM.Models;
 
-namespace Calendar.Controllers
+namespace CRM.Controllers
 {
     [Authorize]
     [InitializeSimpleMembership]
@@ -24,6 +24,10 @@ namespace Calendar.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            if (!WebSecurity.Initialized)
+            {
+                WebSecurity.InitializeDatabaseConnection("DefaultConnection", "Users", "id", "email", autoCreateTables: true);
+            }
             return View();
         }
 
@@ -35,9 +39,15 @@ namespace Calendar.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
+
+            //WebSecurity.CreateUserAndAccount("munish@gmail.com", "123");
+            //Roles.CreateRole("Administrator");
+            //Roles.AddUserToRole("munish@gmail.com", "Administrator");
+            //int id = WebSecurity.GetUserId("munish@gmail.com");
+            //Boolean booln = WebSecurity.Login("munish@gmail.com", "123", persistCookie: model.RememberMe);
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Dashboard", "Home");;
             }
 
             // If we got this far, something failed, redisplay form
@@ -49,6 +59,7 @@ namespace Calendar.Controllers
         // POST: /Account/LogOff
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {

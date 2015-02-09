@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace Calendar.Validator
+namespace CRM.Validator
 {
     public class CustomValidator
     {

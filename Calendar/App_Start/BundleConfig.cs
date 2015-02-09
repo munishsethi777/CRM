@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace Calendar
+namespace CRM
 {
     public class BundleConfig
     {

@@ -1,5 +1,4 @@
-﻿@model Calendar.Models.CalendarEvent
-
+﻿@model MVCModels.CalendarEvent
 @{
     ViewBag.Title = "Create";
 }
@@ -10,88 +9,93 @@
         $('.bDate').datetimepicker();
     });
 </script>
-@using (Html.BeginForm("ConfirmCreate", "Event"))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    @Html.Hidden("id")
-    <fieldset>
-        <legend>CalendarEvent</legend>
-    <h3>General</h3>
-        <div style="margin-left:30px;">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.title)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.title)
-                @Html.ValidationMessageFor(model => model.title)
-            </div>
+<div class="row">
+    <div class="span12">
+        <div class="widget widget-nopad">
+            @using (Html.BeginForm("ConfirmCreate", "Event"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.Hidden("id")
+                    <div class="widget-header">
+                        <i class="icon-list-alt"></i>
+                        <h3>Create New Event</h3>
+                    </div>
+                    <div class="widget-content" style="padding:10px;">
+                        <h4>General</h4>
+                        <div style="margin-left:10px;">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.title)
+                            </div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.title)
+                                @Html.ValidationMessageFor(model => model.title)
+                            </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.description)
-            </div>
-            <div class="editor-field">
-                @Html.TextAreaFor(model => model.description)
-                @Html.ValidationMessageFor(model => model.description)
-            </div>
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.description)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextAreaFor(model => model.description)
+                                @Html.ValidationMessageFor(model => model.description)
+                            </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.startdate)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.startdate, "{0:MM/dd/yyyy}", new { @class = "bDate", @placeholder = "Select Date" })
-                @Html.ValidationMessageFor(model => model.startdate)
-            </div>
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.startdate)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.startdate, "{0:MM/dd/yyyy}", new { @class = "bDate",    @placeholder = "Select Date" })
+                                @Html.ValidationMessageFor(model => model.startdate)
+                            </div>
+                        </div>
+                        <h4>Duration</h4>
+                        <div style="margin-left:10px;">
+                            <div class="editor-field">
+                                <input style="width:auto" type="radio" id="durationoption" value="@MVCModels.DurationOptions.WithoutDuration" name="durationoption" checked="checked"> Without Duration
+                            </div>
+                            <div class="editor-field">
+                                <input style="width:auto" type="radio" id="durationoption" value="@MVCModels.DurationOptions.Untill" name="durationoption"> Untill
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.durationuntill, "{0:MM/dd/yyyy}", new { @class = "bDate", @placeholder = "Select Date" })
+                                @Html.ValidationMessageFor(model => model.durationuntill)
+                            </div>
+                            <div class="editor-field">
+                                <input style="width:auto" type="radio" id="durationoption" value="@MVCModels.DurationOptions.DurationInMunites" name="durationoption"> Duration In Munites
+                            </div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.durationinminutes)
+                                @Html.ValidationMessageFor(model => model.durationinminutes)
+                            </div>
+                        </div>
+                        <h4>Repeated Events</h4>
+                        <div style="margin-left:10px;">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.isrepeated)
+                                @Html.EditorFor(model => model.isrepeated)
+                                @Html.ValidationMessageFor(model => model.isrepeated)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.repeatedweekly)
+                            </div>
+                            <div class="editor-field">
+                                @Html.EditorFor(model => model.repeatedweekly)
+                                @Html.ValidationMessageFor(model => model.repeatedweekly)
+                            </div>
+                        </div>
+                        <p>
+                            <button type="submit" value="Create" class="btn btn-primary" >Create Event</button>
+                        </p>
+                    </div>
+            }
         </div>
-         <h3>Duration</h3>
-         <div style="margin-left:30px;">
-                <div class="editor-field">
-                    <input style="width:auto" type="radio" id="durationoption" value="@Calendar.Models.DurationOptions.WithoutDuration" name="durationoption" checked="checked"> Without Duration
-                </div>
-                <div class="editor-field">
-                    <input style="width:auto" type="radio" id="durationoption" value="@Calendar.Models.DurationOptions.Untill" name="durationoption"> Untill
-                </div>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.durationuntill, "{0:MM/dd/yyyy}", new { @class = "bDate", @placeholder = "Select Date" })
-                    @Html.ValidationMessageFor(model => model.durationuntill)
-                </div>
-                <div class="editor-field">
-                    <input style="width:auto" type="radio" id="durationoption" value="@Calendar.Models.DurationOptions.DurationInMunites" name="durationoption"> Duration In Munites
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.durationinminutes)
-                    @Html.ValidationMessageFor(model => model.durationinminutes)
-                </div>
-         </div>
-        <h3>Repeated Events</h3>
-        <div style="margin-left:30px;">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.isrepeated)
-                @Html.EditorFor(model => model.isrepeated)
-                @Html.ValidationMessageFor(model => model.isrepeated)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.repeatedweekly)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.repeatedweekly)
-                @Html.ValidationMessageFor(model => model.repeatedweekly)
-            </div>
-        </div>
-            <p>
-                <input type="submit" value="Create" />
-            </p>
-</fieldset>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>
 
 
 
-    <script type="text/javascript" language="javascript">
+        <script type="text/javascript" language="javascript">
 
         @{
             var id = 0;
@@ -100,6 +104,6 @@
                 id = Model.id;
             }
         }
-        document.getElementById("id").value = "@id";
-    </script>
+            document.getElementById("id").value = "@id";
+        </script>
 
