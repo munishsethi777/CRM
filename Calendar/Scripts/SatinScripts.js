@@ -1,4 +1,4 @@
-﻿
+﻿$(".chosen-select").chosen({ no_results_text: "Oops, nothing found!" });
 
 
 function ClearClliForm() {
@@ -161,7 +161,7 @@ function ShowDialog(dialogtitle, width, height, URL) {
                 {
                 },
                 function (data) {
-                    $('#dialog-add').html(data.Data.view);
+                    $('#dialog-add').html(data.Data);
                 }
             );
         },
