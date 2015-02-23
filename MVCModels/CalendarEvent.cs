@@ -20,7 +20,7 @@ namespace MVCModels
         public string title { get; set; }
         public string description { get; set; }
         public System.DateTime startdate { get; set; }
-        public Nullable<System.DateTime> enddate { get; set; }
+        public System.DateTime enddate { get; set; }
         public Nullable<int> parenteventseq { get; set; }
         public string durationoption { get; set; }
         public Nullable<System.DateTime> durationuntill { get; set; }

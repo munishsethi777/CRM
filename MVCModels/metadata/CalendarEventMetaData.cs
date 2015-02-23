@@ -16,8 +16,9 @@ namespace MVCModels.metadata
         public string title { get; set; }
          [Display(Name = "Description")]
         public string description { get; set; }
-         [Display(Name = "Date")]
+         [Display(Name = "Start Date")]
         public System.DateTime startdate { get; set; }
+        [Display(Name = "End Date")]
         public Nullable<System.DateTime> enddate { get; set; }
         public Nullable<int> parenteventseq { get; set; }
         public string durationoption { get; set; }        
