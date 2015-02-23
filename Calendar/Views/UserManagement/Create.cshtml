@@ -20,6 +20,13 @@
         <legend>Create User</legend>
         <h3>General</h3>
         <div style="margin-left:30px;">
+            
+            <div class="editor-label">
+               Select Role
+            </div>
+            <div class="editor-field">                
+                @Html.DropDownListFor(model => model.Roles, Model.RoleList)
+             </div>
             <div class="editor-label">
                 @Html.LabelFor(model=>model.name)
             </div>
@@ -40,7 +47,7 @@
                 @Html.LabelFor(model => model.password)
             </div>
             <div class="editor-field">
-                @Html.TextBoxFor(model => model.password)
+                @Html.PasswordFor(model => model.password)
                 @Html.ValidationMessageFor(model => model.password)
             </div>
 

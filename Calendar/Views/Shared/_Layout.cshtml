@@ -12,6 +12,8 @@
         <link href="../../Content/bootstrap-responsive.min.css" rel="stylesheet">
         <link href="../../Content/font-awesome.css" rel="stylesheet">
         <link href="../../Content/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../Content/ui.jqgrid.css" />
+        <link rel="stylesheet" href="../../Content/jqGrid.overrides.css">
         <script src="../../Scripts/jquery-1.8.2.js" type="text/javascript"></script>
     </head>
     <body>
@@ -66,9 +68,14 @@
         <script src="../../Scripts/CustomValidator.js" type="text/javascript"></script>
         <script src="../../Scripts/bootstrap.js"></script>
         <script language="javascript" type="text/javascript" src="../../Scripts/fullcalendar.min.js"></script>
-        <script src="js/base.js"></script> 
+        <!-- jQuery + jqGrid -->
+        <script src="../../Scripts/grid.locale-en.js" type="text/javascript"></script>
+        <script src="../../Scripts/jquery.jqGrid.js" type="text/javascript"></script>
+        <script src="../../Scripts/holder.js" type="text/javascript"></script>
+       
         
         
+        @RenderSection("scripts", required: false)
       
     </body>
 </html>

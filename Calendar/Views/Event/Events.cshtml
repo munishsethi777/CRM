@@ -5,17 +5,16 @@
 <table id="tblGrid"></table>
 <div id="pager">
 </div>
-@section scripts {
+@section scripts {    
     @(Html.Grid("tblGrid")
-            .SetCaption("Users")
-            .AddColumn(new Column("Action").SetCustomFormatter("buttonize").SetWidth(85).SetSearch(false))
-            .AddColumn(new Column("name").SetLabel("Name").SetSortable(true).SetWidth(200))
-            .AddColumn(new Column("email").SetLabel("Email").SetWidth(215))
-            .AddColumn(new Column("phone").SetLabel("phone").SetWidth(150))
-            .AddColumn(new Column("city").SetLabel("City").SetWidth(150))
-            .AddColumn(new Column("state").SetLabel("State").SetWidth(150))
-            .AddColumn(new Column("isactive").SetLabel("Status").SetWidth(150).SetSearchType(Searchtype.Select).SetSearchTerms(new string[] { "1:Active", "0:InActive" }))
-            .SetUrl(Url.Action("GetAllUsers", "UserManagement"))
+    .SetCaption("Events")
+                    .AddColumn(new Column("Action").SetCustomFormatter("buttonize").SetWidth(75).SetSearch(false))
+                    .AddColumn(new Column("title").SetLabel("Title").SetSortable(true).SetWidth(280))
+                    .AddColumn(new Column("description").SetLabel("Description").SetWidth(320))
+                    .AddColumn(new Column("startdate").SetLabel("Start Date").SetWidth(160).SetSearchType(Searchtype.Datepicker).SetSearchDateFormat("mm/dd/yy"))
+                     .AddColumn(new Column("enddate").SetLabel("End Date").SetWidth(160).SetSearchType(Searchtype.Datepicker).SetSearchDateFormat("mm/dd/yy"))
+                    .AddColumn(new Column("isrepeated").SetLabel("Status").SetWidth(110).SetSearchType(Searchtype.Select).SetSearchTerms(new string[] { "1:Repeated", "0:Not Repeated" }))
+            .SetUrl(Url.Action("GridDataForEvents", "Event"))
             .SetAutoWidth(true)
             .SetRowNum(10)
             .SetRowList(new[] { 10, 15, 20, 50 })
@@ -35,7 +34,7 @@
             .SetHoverRows(true)
             .SetAltRows(true)
             .SetShrinkToFit(false)
-            .SetSortName("name")
+            .SetSortName("startdate")
             .SetSortOrder(SortOrder.Desc)
     )
 
@@ -43,11 +42,11 @@
 
         $(document).ready(function () {
             try {
-
+          
                 var tool = "<ul class='nav nav-pills'>" +
                                 "<li><a \" title='Add New' href='Create'>Add New</a></li>" +
-                               "<li><a onclick=\"DeleteSelectedItem();\" title='Delete Selected Users' href='#'>Delete Selected Users</a></li>"
-                "</ul>"
+                               "<li><a onclick=\"DeleteSelectedItem();\" title='Delete Selected Customer' href='#'>Delete Selected Events</a></li>"
+                            "</ul>"
                 $('#t_tblGrid').append(tool);
 
                 //frozen or lock the columns
@@ -61,7 +60,7 @@
                 GridColumnChooser('tblGrid');
 
                 ReloadGrid('tblGrid');
-
+                
             }
             catch (e) {
                 ScriptError(e);
@@ -69,12 +68,12 @@
 
 
         });
-
+        
         function buttonize(cellvalue, options, rowobject) {
             return "<ul class='the-icons'>" +
                         "<li title='Delete' onclick=\"DeleteItem(" + cellvalue + ");\"><i class='icon-remove'></i></li>" +
                         "<li title='Edit' onclick=\"EditItem(" + cellvalue + ");\"><i class='icon-edit'></i></li>" +
                     "</ul>"
-        }
+        }       
     </script>
 }

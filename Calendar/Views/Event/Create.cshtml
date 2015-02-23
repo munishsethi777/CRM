@@ -6,7 +6,43 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.bDate').datetimepicker();
+        $('.bDate').datetimepicker({ dateFormat: "mm/dd/yy", timeFormat: "hh:mm TT" });
+
+        showHideOptions("@Model.durationoption");
+        showHideRepDiv("@Model.isrepeated");
+        $("input[name$='durationoption']").click(function () {
+            var val = $(this).val();
+            showHideOptions(val);
+        });
+        $("input[name$='isrepeated']").click(function () {
+            var val = $(this)[0].checked;
+            showHideRepDiv(val);
+        });
+        function showHideRepDiv(val) {
+            if (val == "True") {
+                val = true;
+            } else if (val == "False") {
+                val = false;
+            }
+            if (val){
+                $("#repDiv").show();
+            } else {
+                $("#repDiv").hide();
+            }
+        }
+        function showHideOptions(val) {
+            if (val == "Untill") {
+                $("#untilDate").show();
+                $("#minutes").hide();
+            } else if (val == "DurationInMunites") {
+                $("#untilDate").hide();
+                $("#minutes").show();
+            } else {
+                $("#untilDate").hide();
+                $("#minutes").hide();
+            }
+        }
+
     });
 </script>
 <div class="row">
@@ -25,6 +61,7 @@
                         <h4>General</h4>
                         <div style="margin-left:10px;">
                             <div class="editor-label">
+                           
                                 @Html.LabelFor(model => model.title)
                             </div>
                             <div class="editor-field">
@@ -51,23 +88,24 @@
                         <h4>Duration</h4>
                         <div style="margin-left:10px;">
                             <div class="editor-field">
-                                <input style="width:auto" type="radio" id="durationoption" value="@MVCModels.DurationOptions.WithoutDuration" name="durationoption" checked="checked"> Without Duration
+                                 @Html.RadioButtonFor(model => model.durationoption, MVCModels.DurationOptions.WithoutDuration) Without Duration
                             </div>
                             <div class="editor-field">
-                                <input style="width:auto" type="radio" id="durationoption" value="@MVCModels.DurationOptions.Untill" name="durationoption"> Untill
+                                 @Html.RadioButtonFor(model => model.durationoption, MVCModels.DurationOptions.Untill) Untill 
                             </div>
-                            <div class="editor-field">
+                            <div class="editor-field" id="untilDate" style="display:none">
                                 @Html.TextBoxFor(model => model.durationuntill, "{0:MM/dd/yyyy}", new { @class = "bDate", @placeholder = "Select Date" })
                                 @Html.ValidationMessageFor(model => model.durationuntill)
                             </div>
                             <div class="editor-field">
-                                <input style="width:auto" type="radio" id="durationoption" value="@MVCModels.DurationOptions.DurationInMunites" name="durationoption"> Duration In Munites
+                                @Html.RadioButtonFor(model => model.durationoption, MVCModels.DurationOptions.DurationInMunites)Duration In Munites
                             </div>
-                            <div class="editor-field">
+                            <div class="editor-field" id="minutes" style="display:none">
                                 @Html.EditorFor(model => model.durationinminutes)
                                 @Html.ValidationMessageFor(model => model.durationinminutes)
                             </div>
                         </div>
+                        
                         <h4>Repeated Events</h4>
                         <div style="margin-left:10px;">
                             <div class="editor-label">
@@ -75,13 +113,14 @@
                                 @Html.EditorFor(model => model.isrepeated)
                                 @Html.ValidationMessageFor(model => model.isrepeated)
                             </div>
-
-                            <div class="editor-label">
-                                @Html.LabelFor(model => model.repeatedweekly)
-                            </div>
-                            <div class="editor-field">
-                                @Html.EditorFor(model => model.repeatedweekly)
-                                @Html.ValidationMessageFor(model => model.repeatedweekly)
+                            <div id="repDiv" style="display:none">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.repeatedweekly)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.repeatedweekly)
+                                    @Html.ValidationMessageFor(model => model.repeatedweekly)
+                                </div>
                             </div>
                         </div>
                         <p>

@@ -1,0 +1,54 @@
+﻿
+		<div class="widget widget-nopad">
+            <div class="widget-header"> <i class="icon-list-alt"></i>
+              
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+              <div id='calendar' style="width:80%">
+              </div>
+            </div>
+            <!-- /widget-content --> 
+        </div>
+
+
+	<script>
+        $(document).ready(function () {
+            events =  [
+				{
+				    title: 'All Day Event',
+				    start: '2015-02-01'
+				},
+				{
+				    title: 'Long Event',
+				    start: '2015-02-07',
+				    end: '2015-02-10'
+				}
+			]
+            $.getJSON("LoadCalendar", function (result) {
+                loadCalendar(result)
+            });
+
+            
+        });
+        function loadCalendar(data) {
+            var calendar = $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    var URL = "EventDetails\\" + calEvent.id;
+                    ShowDialog("Event Detail", 450, 300, URL);
+                },
+                selectable: false,
+                selectHelper: true,
+                
+                editable: true,
+                eventLimit: true,
+                events: data
+            });
+        }
+
+    </script><!-- /Calendar -->

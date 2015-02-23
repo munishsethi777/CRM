@@ -1,0 +1,59 @@
+﻿@model MVCModels.CalendarEvent
+@{
+    ViewBag.Title = "Event Detail";
+}
+
+
+<style>
+    div.display-label {
+        margin-right: 10px;
+        font-weight: bold;
+        padding: 3px;
+    }
+
+    span {
+        padding: 3px;
+    }
+</style>
+<form style="align-content:center" name="Detail" >
+
+    <div>
+        <strong> @Html.DisplayNameFor(model => model.title) :</strong>
+   
+        <span>@Html.DisplayFor(model => model.title)</span>
+    </div>
+
+    <div>
+        <strong>
+            @Html.DisplayNameFor(model => model.description) :
+        </strong>
+        <span>@Html.DisplayFor(model => model.description)</span>
+    </div>
+
+    <div>
+        <strong>@Html.DisplayNameFor(model => model.startdate) :</strong>
+        <span> @Html.DisplayFor(model => model.startdate)</span>
+    </div>
+
+    <div>
+        <strong>@Html.DisplayNameFor(model => model.enddate) :</strong>
+        <span>@Html.DisplayFor(model => model.enddate)</span>
+    </div>
+
+     
+       
+         
+        @if (ViewBag.repeatingEventOn != null)
+        {
+            <div>
+                <strong>Repeating Event on :-</strong>
+                @foreach (var repeating in ViewBag.repeatingEventOn) {
+                <div style="margin-left:50px;">@repeating.startdate</div>
+                }
+            </div>
+        }
+       
+         
+        
+    
+</form>
