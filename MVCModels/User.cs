@@ -11,11 +11,16 @@ namespace MVCModels
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Mvc;
     using System.ComponentModel.DataAnnotations;
     [MetadataType(typeof(MVCModels.metadata.UserMetaData))]
     
     public partial class User
     {
+        public User()
+        {
+            RoleList = SecurityUtil.getAllRolesMultiSelect(this.Roles);
+        }
         public int id { get; set; }
         public string name { get; set; }
         public string email { get; set; }
@@ -33,5 +38,9 @@ namespace MVCModels
         public Nullable<System.DateTime> createdon { get; set; }
         public Nullable<long> createdby { get; set; }
         public Nullable<System.DateTime> lastmodifiedon { get; set; }
+        public string[] Roles { get; set; }
+        
+       
+        public IEnumerable<SelectListItem> RoleList { get; set; }
     }
 }
