@@ -5,31 +5,119 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using MVCModels;
+using MvcJqGrid;
+using System.Data;
+using MVCBusiness;
+using System.Collections;
+using Newtonsoft.Json;
+
 
 namespace CRM.Controllers
 {
-    public class EventController : Controller
+    public class EventController : BaseController
     {
-        private static AccountsEntities db = new AccountsEntities();
-        //
-        // GET: /Event/
-
+        AccountsEntities db = new AccountsEntities();
+        IHomeRepository objHomeRep = new HomeRepository();
+        String Delete_SQL = "Delete from CalendarEvents where id in ({0})";
+      
         public ActionResult Index()
         {
-            var db = new AccountsEntities();
-            var events = from calEvents in db.CalendarEvents
-                         select calEvents;
-            return View(events.ToList());
+            return View("Events");
         }
 
-        public ActionResult ShowEvents()
+        [HttpPost]
+        public JsonResult EventDetails(int id)
+        {
+            ViewBag.repeatingEventOn = null;
+            CalendarEvent calEvent = db.CalendarEvents.Find(id);
+            IEnumerable<CalendarEvent> repeatingEventOn = (IEnumerable<CalendarEvent>)db.CalendarEvents.Where(x => x.parenteventseq == calEvent.id);
+            if (repeatingEventOn.Any())
+            {
+                ViewBag.repeatingEventOn = repeatingEventOn;
+            }            
+            var jsonResult = new
+            {
+                Data = RenderPartialViewToString("EventDetails", calEvent)
+            };
+
+            if (Request.IsAjaxRequest())
+            {
+                JsonResult result = Json(jsonResult, JsonRequestBehavior.AllowGet);
+                return result;
+            }
+            return null;
+        }
+            
+        public ActionResult ShowCalendar()
         {
             return View();
         }
-
+        public ActionResult LoadCalendar()
+        {
+            try
+            {
+                IEnumerable objJsonResult = objHomeRep.CalendarDataForEvents();
+                JsonResult result = Json(objJsonResult, JsonRequestBehavior.AllowGet);
+                return result;
+            }
+            catch (Exception Ex)
+            {
+                //log.Error(Ex);
+            }
+            return null;
+        }
         public ActionResult Create()
         {
-            return View();
+            CalendarEvent calEvent = new CalendarEvent();
+            calEvent.durationoption = DurationOptions.WithoutDuration.ToString();
+            return View(calEvent);
+        }
+
+        public ActionResult GridDataForEvents(GridSettings objGrdSettings)
+        {
+            try
+            {
+                object objJsonResult = objHomeRep.GridDataForEvents(objGrdSettings);
+
+                JsonResult result = Json(objJsonResult, JsonRequestBehavior.AllowGet);
+                return result;
+            }
+            catch (Exception Ex)
+            {
+                //log.Error(Ex);
+            }
+            return null;
+        }
+
+
+        [HttpPost]
+        public ActionResult Delete(string sIds)
+        {
+            try
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    int iCheck = objHomeRep.Delete(sIds, Delete_SQL);
+                    JsonResult(iCheck > 0);
+                }
+                else
+                {
+                     NotAjaxJsonResult();
+                }
+            }
+            catch (Exception Ex)
+            {
+                ExcetionJsonResult(Ex.Message);
+            }
+            return jSONResult;
+        }
+
+
+
+        public ActionResult Edit(int id)
+        {
+            CalendarEvent calEevent = db.CalendarEvents.Find(id);
+            return View("Create", calEevent);
         }
        
         public ActionResult ConfirmCreate(MVCModels.CalendarEvent calEvent)
@@ -39,6 +127,7 @@ namespace CRM.Controllers
                 calEvent.eventtype = "calendar";
                 calEvent.deparmentid = 0;
                 calEvent.enddate = calEvent.startdate;
+                calculateDuration(calEvent);
                 if (calEvent.id > 0)
                 {
                     DeleteChildEvents(calEvent);
@@ -53,7 +142,7 @@ namespace CRM.Controllers
                 db.SaveChanges();
                 db.Entry(calEvent).GetDatabaseValues();
                 CreateChildEvents(calEvent);
-                return RedirectToAction("Index");
+                return View("Events");
             }
             catch (Exception e)
             {
@@ -63,40 +152,23 @@ namespace CRM.Controllers
             
         }
 
-        public ActionResult Edit(int id)
-        {
-            CalendarEvent calEevent = db.CalendarEvents.Find(id);
-            return View("Create", calEevent);
-        }
-
-        //public JsonResult Delete(int id)
-        //{
-        //    CalendarEvent calEvent = db.CalendarEvents.Find(id);
-        //    return UserView("Delete", user);
-        //}
-
-        //
-        // POST: /tblUser/Delete/5
-
-     
-        public ActionResult ConfirmDelete(int id)
-        {
-            try
+        private void calculateDuration(CalendarEvent calEvent){
+            string durationOption = calEvent.durationoption;
+            if (durationOption.Equals(DurationOptions.Untill.ToString()))
             {
-                CalendarEvent calEvents = db.CalendarEvents.Find(id);
-                DeleteChildEvents(calEvents);
-                db.CalendarEvents.Remove(calEvents);
-                db.SaveChanges();                
+                calEvent.enddate = calEvent.durationuntill ?? DateTime.Now; 
             }
-            catch (Exception e)
+            else if (durationOption.Equals(DurationOptions.DurationInMunites.ToString()))
             {
-                ModelState.AddModelError(string.Empty, "Exception: - " + e.Message);
+                double minutes = (double)calEvent.durationinminutes;
+                DateTime enddate = calEvent.startdate;
+                calEvent.enddate = enddate.AddMinutes(minutes);
             }
-            return RedirectToAction("Index");
             
         }
 
-
+        
+        //Private API'S
         private void DeleteChildEvents(CalendarEvent calEvent)
         {
            int i =  db.Database.ExecuteSqlCommand("delete from CalendarEvents where parenteventseq = " + calEvent.id);
@@ -107,6 +179,9 @@ namespace CRM.Controllers
             if (calEvent.isrepeated)
             {
                 int? repCount = calEvent.repeatedweekly;
+                DateTime startDate = calEvent.startdate;
+                DateTime endDate = calEvent.enddate;
+                 
                 for (int i = 1; i < repCount; i++)
                 {
                     CalendarEvent childEvent = db.CalendarEvents.Create();
@@ -115,14 +190,10 @@ namespace CRM.Controllers
                     childEvent.id = 0;
                     childEvent.parenteventseq = calEvent.id;
                     string durationOption = calEvent.durationoption;
-                    if (durationOption.Equals(DurationOptions.Untill))
-                    {
-
-                    }
-                    else if (durationOption.Equals(DurationOptions.DurationInMunites))
-                    {
-
-                    }
+                    startDate = startDate.AddDays(7);
+                    endDate = endDate.AddDays(7);
+                    childEvent.startdate = startDate;
+                    childEvent.enddate = endDate;                                 
                     db.SaveChanges();
                 }
             }

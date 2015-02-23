@@ -6,12 +6,17 @@ using System.Web.Mvc;
 using MVCModels;
 using MvcJqGrid;
 using System.Web.Script.Serialization;
+using MVCBusiness;
+using WebMatrix.WebData;
+using System.Web.Security;
 namespace CRM.Controllers
 {
-    public class UserManagementController : Controller
+    public class UserManagementController : BaseController
     {
 
         private static AccountsEntities db = new AccountsEntities();
+        String Delete_SQL = "Delete from Users where id in ({0})";
+        IHomeRepository objHomeRep = new HomeRepository();
         public ActionResult Index()
         {
             return View();
@@ -21,45 +26,87 @@ namespace CRM.Controllers
         {
             try
             {
-                IEnumerable<User> users = db.Users;
-                int objtot = users.Count();
-
-                //int64 objtot = convert.toint64(objorderdashboard.tables[1].rows[0]["cnt"]);
-
-                if (users == null)
-                    return null;
-
-                var jsondata = new
-                {
-                    total = objtot / gridSettings.PageSize + 1,
-                    page = gridSettings.PageIndex,
-                    records = objtot,
-                    rows = new JavaScriptSerializer().Serialize(users)
-                };
-                JsonResult result = Json(jsondata);
+                object objJsonResult = objHomeRep.GridDataForUsers(gridSettings);
+                JsonResult result = Json(objJsonResult, JsonRequestBehavior.AllowGet);
                 return result;
-
             }
             catch (Exception ex)
             {
             }
             return null;
         }
-        public ActionResult Create()
-        {
-            return View();
-        }
-        public ActionResult ConfirmCreate(MVCModels.User user)
+
+        [HttpPost]
+        public ActionResult Delete(string sIds)
         {
             try
             {
-                user.createdon = new DateTime();
-                user.lastmodifiedon = new DateTime();
-                user.isactive = 1;
-                user.usertype = "user";
-                db.Users.Add(user);
+                if (Request.IsAjaxRequest())
+                {
+                    int iCheck = objHomeRep.Delete(sIds, Delete_SQL);
+                    if (iCheck > 0)
+                    {
+                        //TODO -- Remove User roles
+                    }
+                    JsonResult(iCheck > 0);
+                }
+                else
+                {
+                    NotAjaxJsonResult();
+                }
+            }
+            catch (Exception Ex)
+            {
+                ExcetionJsonResult(Ex.Message);
+            }
+            return jSONResult;
+        }
+
+
+
+        public ActionResult Edit(int id)
+        {
+            User user = db.Users.Find(id);
+            return View("Create", user);
+        }
+
+        public ActionResult Create()
+        {
+            User user = new User();
+            return View(user);
+        }
+
+        public ActionResult ConfirmCreate(MVCModels.User user,string[] roles)
+        {
+            try
+            {
+                user.lastmodifiedon = DateTime.Now;
+                int id = user.id;
+                if (id > 0)
+                {
+                    user = db.Users.Find(id); 
+                }
+                else
+                {
+                    WebSecurity.CreateUserAndAccount(user.email, user.password);
+                    id = WebSecurity.GetUserId(user.email);
+                    user.id = id;
+                    user.createdon = DateTime.Now;
+                    user.isactive = 1;
+                    user.usertype = "user";
+                }
+                UpdateModel(user);
+                user.id = id;
+                db.Entry(user).State = System.Data.EntityState.Modified;
+                string[] exstingRoles = Roles.GetRolesForUser(user.email);
+                if (exstingRoles.Length > 0)
+                {
+                    Roles.RemoveUserFromRoles(user.email, exstingRoles);
+                }
+                Roles.AddUserToRoles(user.email, roles);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                ModelState.Clear();
+                return View("Index");
             }
             catch (Exception e)
             {
@@ -67,6 +114,7 @@ namespace CRM.Controllers
                 return View("Create", user);
             }
         }
+       
         public ActionResult CreateRole()
         {
             return View();

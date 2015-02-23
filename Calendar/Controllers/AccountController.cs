@@ -41,13 +41,14 @@ namespace CRM.Controllers
         {
 
             //WebSecurity.CreateUserAndAccount("munish@gmail.com", "123");
-            //Roles.CreateRole("Administrator");
-            //Roles.AddUserToRole("munish@gmail.com", "Administrator");
+           // Roles.CreateRole("Administrator");
+           
+           // Roles.AddUserToRole("munish@gmail.com", "Administrator");
             //int id = WebSecurity.GetUserId("munish@gmail.com");
             //Boolean booln = WebSecurity.Login("munish@gmail.com", "123", persistCookie: model.RememberMe);
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToAction("Dashboard", "Home");;
+                return RedirectToAction("Dashboard", "Home");
             }
 
             // If we got this far, something failed, redisplay form
