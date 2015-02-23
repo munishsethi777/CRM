@@ -13,7 +13,7 @@
           <Property Name="title" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="description" Type="nvarchar(max)" />
           <Property Name="startdate" Type="datetime" Nullable="false" />
-          <Property Name="enddate" Type="datetime" />
+          <Property Name="enddate" Nullable="false" Type="datetime" />
           <Property Name="parenteventseq" Type="int" />
           <Property Name="durationoption" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="durationuntill" Type="datetime" />
@@ -42,7 +42,6 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="100" />
           <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="password" Type="varchar" MaxLength="50" />
           <Property Name="mobile" Type="varchar" MaxLength="50" />
           <Property Name="address1" Type="varchar" MaxLength="200" />
           <Property Name="address2" Type="varchar" MaxLength="200" />
@@ -74,10 +73,10 @@
           <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="startdate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="enddate" Type="DateTime" Precision="3" />
+          <Property Name="enddate" Type="DateTime" Nullable="false"  Precision="3" />
           <Property Name="parenteventseq" Type="Int32" />
           <Property Name="durationoption" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="durationuntill" Type="DateTime" Precision="3" />
+          <Property Name="durationuntill"  Type="DateTime" Precision="3" />
           <Property Name="durationinminutes" Type="Int32" />
           <Property Name="repeatedweekly" Type="Int32" />
           <Property Name="isrepeated" Type="Boolean" Nullable="false" />
@@ -91,7 +90,7 @@
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          
           <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="address1" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="address2" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -158,7 +157,7 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="password" ColumnName="password" />
+               
                 <ScalarProperty Name="mobile" ColumnName="mobile" />
                 <ScalarProperty Name="address1" ColumnName="address1" />
                 <ScalarProperty Name="address2" ColumnName="address2" />
